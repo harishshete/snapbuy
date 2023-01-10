@@ -7,6 +7,6 @@ router.post('/register', authControler.registerSeller);
 
 router.post('/login', authControler.login);
 
-router.put('/update:id', authControler.verifyAndAuthorizeSeller, SellersController.updateSeller);
+router.put('/update', authControler.verifyAndAuthorizeSeller, SellersController.updateSeller);
 
 module.exports = router;

@@ -9,6 +9,7 @@ var app = express();
 // database Connection
 require('./Config/dbConnection');
 
+app.set("view engine", "ejs");
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -18,6 +19,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const routes = require('./Routes/index');
 app.use('/', routes);
+const directory = path.join(__dirname, 'productImages');
+app.use('/productImages', express.static(directory)); 
+
 
 
 // catch 404 and forward to error handler

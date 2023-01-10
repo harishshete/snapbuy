@@ -14,14 +14,13 @@ exports.verifyAndAuthorizeSeller = catchAsync(async (req, res, next) => {
             if (err) {
                 return res.status(403).json("Token is not valid");
             } else {
-                const user = authData;
-                if (user.id === req.params.id || user.role === "seller") {
+                req.user = authData;
+                if (req.user.id || req.user.role === "seller") {
                     next();
                 }
                 else {
                     res.status(403).json("Access Denied");
                 }
-
             }
         });
     } catch (error) {
@@ -42,8 +41,8 @@ exports.verifyAndAuthorizeShopper = catchAsync(async (req, res, next) => {
             if (err) {
                 return res.status(403).json("Token is not valid");
             } else {
-                const user = authData;
-                if (user.id === req.params.id || user.role === "shopper") {
+                req.user = authData;
+                if (req.user.id || req.user.role === "shopper") {
                     next();
                 }
                 else {

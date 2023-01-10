@@ -5,7 +5,7 @@ const shoppersController = require('../Controller/ShoppersController/ShoppersCon
 
 router.post('/register', authControler.registerShopper);
 
-router.put('/update:id', authControler.verifyAndAuthorizeShopper,shoppersController.updateShopper);
+router.put('/update', authControler.verifyAndAuthorizeShopper,shoppersController.updateShopper);
 
 router.post('/login', authControler.login);
 

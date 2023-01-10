@@ -4,13 +4,34 @@ const mongoose = require("mongoose");
 
 const ProductSchema = mongoose.Schema(
     {
-        title: {type: String, required: true},
-        description: {type: String, required: true},
-        img: {type: String, required: true},
-        category: {type: String, required: true},
-        color: {type: String, required: true},
-        size: {type: Boolean, default: false},
-        prize: {type: Number, required: true},
+        sellerid: {
+            type: String,
+            required: true
+        },
+        title :{
+            type: String,
+        },
+        summary : {
+            type: String
+        },
+        category : {
+            type: String
+        },
+        shop :{
+            type: String
+        },
+        instock : {
+            type: Boolean
+        },
+        size : [],
+        color : [],
+        price : {
+            type: Number
+        },
+        image : {
+            type: String,
+            require: true
+        }
     }, {timestamps: true}
 );
 
