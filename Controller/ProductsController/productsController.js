@@ -37,10 +37,76 @@ exports.getAllProducts = async (req, res) => {
 
 }
 
-exports.getProductsWithFilter = async (req, res) => {
 
-    res.json("Request for Add Product");
+
+
+exports.getProductsByCategory = async (req, res) => {
+
+    try {
+        const products = await Product.find({ category: req.body.category });
+        if (products) {
+            res.status(200).json(products);
+        } else {
+            res.status(204).json("no data found, make sure you entered correct Category");
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+
 }
+
+exports.getProductById = async (req, res) => {
+    const productId = req.params.id.trim();
+    console.log(productId);
+    try {
+        const product = await Product.findById(productId);
+        console.log("Product" + product);
+        if (product) {
+            res.status(200).json(product);
+        } else {
+            res.status(204).json("Product Not Found, make sure you entered correct product id");
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
+exports.allProducts = async (req, res) => {
+    console.log("Working...")
+
+    try {
+        const allProducts = await Product.find();
+        if(allProducts){
+            res.status(200).json(allProducts);
+        }else{
+            res.status(204).json("No data found");
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+    
+    // const productId = req.params.id.trim();
+    // console.log(productId);
+    // try {
+    //     const product = await Product.findById(productId);
+    //     console.log("Product" + product);
+    //     if (product) {
+    //         res.status(200).json(product);
+    //     } else {
+    //         res.status(204).json("Product Not Found, make sure you entered correct product id");
+    //     }
+    // } catch (error) {
+    //     res.status(500).json(error);
+    // }
+
+    // res.send("working..");
+    // console.log("Working..")
+
+}
+
+
+
+
 
 
 exports.deleteProduct = async (req, res) => {
@@ -49,8 +115,6 @@ exports.deleteProduct = async (req, res) => {
     const arr = imgURL.image.split("/");
     // res.send();
     const imageName = arr[arr.length - 1];
-
-
     try {
         await Product.findByIdAndDelete(req.params.id, (err, docs) => {
             if (err) {
@@ -70,13 +134,6 @@ exports.deleteProduct = async (req, res) => {
     } catch (error) {
 
     }
-
-
-
-
-
-
-
 }
 
 
@@ -107,6 +164,9 @@ exports.updateProduct = async (req, res) => {
 
 
 
+// exports.getAllProductsShoppers = async (req, res) => {
+//     res.send("working..");
+// }
 
 
 

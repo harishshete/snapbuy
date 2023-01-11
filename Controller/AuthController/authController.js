@@ -15,7 +15,7 @@ exports.verifyAndAuthorizeSeller = catchAsync(async (req, res, next) => {
                 return res.status(403).json("Token is not valid");
             } else {
                 req.user = authData;
-                if (req.user.id || req.user.role === "seller") {
+                if (req.user.id && req.user.role === "seller") {
                     next();
                 }
                 else {
@@ -42,7 +42,7 @@ exports.verifyAndAuthorizeShopper = catchAsync(async (req, res, next) => {
                 return res.status(403).json("Token is not valid");
             } else {
                 req.user = authData;
-                if (req.user.id || req.user.role === "shopper") {
+                if (req.user.id && req.user.role === "shopper") {
                     next();
                 }
                 else {
