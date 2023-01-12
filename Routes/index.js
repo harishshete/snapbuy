@@ -6,6 +6,7 @@ const shoppers = require('./shoppersRoutes');
 const sellers =  require('./sellerRoutes');
 const orders =  require('./ordersRoutes');
 const cart = require('./cartRoutes');
+const cart2 = require('./cartRoutes');
 const payment =  require('./paymentRoutes');
 const products = require('./productsRoutes');
 const wishlist = require('./wishlistRoutes');
@@ -27,3 +28,4 @@ app.use('/wishlist', wishlist);
 
 
 module.exports = app;
+
