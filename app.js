@@ -10,7 +10,7 @@ var cors = require('cors');
 // database Connection
 require('./Config/dbConnection');
 
-// app.set("view engine", "ejs");
+app.set("view engine", "ejs");
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
 const routes = require('./Routes/index');
+
 app.use('/', routes);
 const directory = path.join(__dirname, 'productImages');
 app.use('/productImages', express.static(directory)); 

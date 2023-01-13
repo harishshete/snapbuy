@@ -17,9 +17,9 @@ router.put('/update:id', authControler.verifyAndAuthorizeSeller, productsControl
 
 
 // Form to Add product
-// router.get("/form", (req, res) => {
-//     res.render("form");
-// });
+router.get("/form", (req, res) => {
+    res.render("form");
+});
 
 
 router.post('/add:id', upload.single('productImage'), productsController.addProduct);
