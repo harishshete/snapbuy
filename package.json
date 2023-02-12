@@ -23,6 +23,7 @@
     "multer-gridfs-storage": "^1.2.2",
     "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
+    "stripe": "^11.6.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

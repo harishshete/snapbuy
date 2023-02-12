@@ -6,12 +6,12 @@ const shoppers = require('./shoppersRoutes');
 const sellers =  require('./sellerRoutes');
 const orders =  require('./ordersRoutes');
 const cart = require('./cartRoutes');
-const cart2 = require('./cartRoutes');
 const payment =  require('./paymentRoutes');
 const products = require('./productsRoutes');
 const wishlist = require('./wishlistRoutes');
 const reports = require('./reportsRoutes');
 const status = require('./status');
+const stripe = require('./Stripe');
 // const users = require('./userRoutes');
 
 // Routing based on URL-pattern
@@ -24,6 +24,7 @@ app.use('/payment', payment);
 app.use('/products', products);
 app.use('/reports', reports);
 app.use('/wishlist', wishlist);
+app.use('/stripe', stripe);
 // app.use('/users', users);
 
 

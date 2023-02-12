@@ -14,6 +14,7 @@ router.get('/allproducts', productsController.allProducts);
 router.get('/getproducts:id', productsController.getAllProducts); 
 router.delete('/delete:id', productsController.deleteProduct);
 router.put('/update:id', authControler.verifyAndAuthorizeSeller, productsController.updateProduct);
+router.post('/add:id', upload.single('productImage'), productsController.addProduct);
 
 
 // Form to Add product
@@ -22,6 +23,6 @@ router.get("/form", (req, res) => {
 });
 
 
-router.post('/add:id', upload.single('productImage'), productsController.addProduct);
+
 
 module.exports = router;

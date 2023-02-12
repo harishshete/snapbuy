@@ -3,13 +3,15 @@ const Seller = require('../../models/Seller');
 const catchAsync = require('../../utils/catchAsync');
 const CryptoJS = require('crypto-js');
 const jwt = require('jsonwebtoken');
+const AuthTokens = require("../../models/AuthTokens");
+const { token } = require('morgan');
 
 
 // Verify & Authorize Seller 
 exports.verifyAndAuthorizeSeller = catchAsync(async (req, res, next) => {
-    console.log("Request to Verify JWT in authController");
+    const token = req.headers['authorization'];
     try {
-        const token = req.headers['authorization'];
+
         jwt.verify(token, process.env.JWT_SECRET_KEY, (err, authData) => {
             if (err) {
                 return res.status(403).json("Token is not valid");
@@ -23,20 +25,71 @@ exports.verifyAndAuthorizeSeller = catchAsync(async (req, res, next) => {
                 }
             }
         });
+
     } catch (error) {
-        // Access Denied
         console.log(error);
         return res.status(401).send("you are not authenticated");
     }
 
+
 });
+
+
+// const isTokenPresent = async (req, res, next) => {
+//     const token = req.headers['authorization'];
+//     const authToken = await AuthTokens.findOne({ token: token });
+//     console.log(authToken);
+//     if (authToken === null) {
+//         // res.status(204).json("Login First");
+//         // next();
+//         res.json("Login First");
+//     } else {
+//         // res.json("Login First");
+//     }
+// }
+
+
+// Verify If user has logged out 
+exports.isPresent = async (req, res, next) => {
+    const token = req.headers['authorization'];
+    const authToken = await AuthTokens.findOne({ token: token });
+    console.log(authToken);
+    if (authToken != null) {
+        // res.status(204).json("Login First");
+        next();
+    } else {
+        res.json("Login First");
+    }
+}
+
+
+exports.logout = async (req, res) => {
+    const token = req.headers['authorization'];
+    console.log(token);
+    try {
+        const id = await AuthTokens.findOne({ token: token }, { _id: 1, token: 0 });
+        console.log("Token ID: " + id);
+        if (id) {
+            await AuthTokens.findByIdAndDelete(id, (err, doc) => {
+                if (err) {
+                    res.status(500).json(err);
+                } else {
+                    res.status(200).json("logged out user successfully");
+                }
+            });
+        }
+    } catch (error) {
+        res.status()
+    }
+}
 
 
 // Verify & Authorize Shopper 
 exports.verifyAndAuthorizeShopper = catchAsync(async (req, res, next) => {
     console.log("Request to Verify JWT in authController");
+    const token = req.headers['authorization'];
+    console.log("TOKEN:: "+token)
     try {
-        const token = req.headers['authorization'];
         jwt.verify(token, process.env.JWT_SECRET_KEY, (err, authData) => {
             if (err) {
                 return res.status(403).json("Token is not valid");
@@ -48,7 +101,6 @@ exports.verifyAndAuthorizeShopper = catchAsync(async (req, res, next) => {
                 else {
                     res.status(403).json("Access Denied");
                 }
-
             }
         });
     } catch (error) {
@@ -56,7 +108,6 @@ exports.verifyAndAuthorizeShopper = catchAsync(async (req, res, next) => {
         console.log(error);
         return res.status(401).send("you are not authenticated");
     }
-
 });
 
 
@@ -161,7 +212,16 @@ exports.login = catchAsync(async (req, res, next) => {
             );
 
             const { password, ...others } = user._doc;
-            res.status(200).json({ ...others, accessToken });
+
+            try {
+                const token = new AuthTokens({ "token": accessToken });
+                const savedtoken = await token.save();
+                if (savedtoken) {
+                    res.status(200).json({ ...others, accessToken });
+                }
+            } catch (error) {
+                res.status(500).json(error);
+            }
 
         } else if (req.body.role == "seller") {
             const user = await Seller.findOne({ email: req.body.email });
@@ -181,7 +241,18 @@ exports.login = catchAsync(async (req, res, next) => {
             );
 
             const { password, ...others } = user._doc;
-            res.status(200).json({ ...others, accessToken });
+
+            try {
+                const token = new AuthTokens({ "token": accessToken });
+                const savedtoken = await token.save();
+                if (savedtoken) {
+                    res.status(200).json({ ...others, accessToken });
+                }
+            } catch (error) {
+                res.status(500).json(error);
+            }
+            // res.status(200).json({ ...others, accessToken });
+
         } else {
             res.status(500).json("Please Choose Role");
         }
@@ -193,7 +264,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
 
 // Shoppers & Seller Logout
-exports.logout = async (req, res) => {
-    res.json("Request for logout");
-}
+// exports.logout = async (req, res) => {
+//     res.json("Request for logout");
+// }
 
