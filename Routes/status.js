@@ -4,8 +4,8 @@ const ordersController = require('../Controller/OrsersController/ordersControlle
 
 
 router.get('/', (req, res) => {
-    res.status(200).json({
-        staus : "UP"
+    res.status(403).json({
+        message : "You are not suthorized to sccess this resource"
     })
 });
 
